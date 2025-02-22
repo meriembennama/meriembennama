@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirection...</title>
+    <script>
+        function redirectToDrive() {
+            var driveLink = "https://drive.google.com/uc?export=download&id=1Dap7LtjWzTCpnxjz7b78uIyDApOuDYNG";
+            var userAgent = navigator.userAgent.toLowerCase();
+
+            // Vérifie si l'utilisateur est sur TikTok ou Instagram
+            var isInApp = userAgent.includes("instagram") || userAgent.includes("tiktok");
+
+            if (isInApp) {
+                // Affiche un message expliquant comment ouvrir dans le navigateur
+                document.getElementById("message").innerHTML = `
+                    <h2>⚠️ Problème de téléchargement</h2>
+                    <p>Il semble que tu sois sur Instagram ou TikTok. Pour télécharger le fichier :</p>
+                    <ul>
+                        <li>Appuie sur les <strong>trois petits points</strong> en haut à droite.</li>
+                        <li>Choisis <strong>"Ouvrir dans le navigateur"</strong>.</li>
+                        <li>Une fois dans le navigateur, le téléchargement fonctionnera.</li>
+                    </ul>
+                    <p>Ou bien, <a href="${driveLink}" target="_blank">clique ici pour essayer</a>.</p>
+                `;
+            } else {
+                // Si on est déjà dans un navigateur, on redirige directement
+                window.location.href = driveLink;
+            }
+        }
+    </script>
+</head>
+<body onload="redirectToDrive()">
+    <h1>Redirection en cours...</h1>
+    <p>Si rien ne se passe, <a href="https://drive.google.com/uc?export=download&id=1Dap7LtjWzTCpnxjz7b78uIyDApOuDYNG">clique ici</a>.</p>
+    <div id="message"></div>
+</body>
+</html>
