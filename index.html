@@ -5,33 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirection...</title>
     <script>
-        function redirectToDrive() {
+        function checkAppAndRedirect() {
             var driveLink = "https://drive.google.com/uc?export=download&id=1Dap7LtjWzTCpnxjz7b78uIyDApOuDYNG";
             var userAgent = navigator.userAgent.toLowerCase();
-
-            // Vérifie si l'utilisateur est sur TikTok ou Instagram
+            var isAndroid = userAgent.includes("android");
+            var isIOS = userAgent.includes("iphone") || userAgent.includes("ipad");
             var isInApp = userAgent.includes("instagram") || userAgent.includes("tiktok");
 
             if (isInApp) {
-                // Affiche un message expliquant comment ouvrir dans le navigateur
+                // Si on est sur TikTok ou Instagram, afficher un bouton pour ouvrir dans le navigateur
                 document.getElementById("message").innerHTML = `
-                    <h2>⚠️ Problème de téléchargement</h2>
+                    <h2>⚠️ Ouvre ce lien dans ton navigateur</h2>
                     <p>Il semble que tu sois sur Instagram ou TikTok. Pour télécharger le fichier :</p>
                     <ul>
                         <li>Appuie sur les <strong>trois petits points</strong> en haut à droite.</li>
                         <li>Choisis <strong>"Ouvrir dans le navigateur"</strong>.</li>
                         <li>Une fois dans le navigateur, le téléchargement fonctionnera.</li>
                     </ul>
-                    <p>Ou bien, <a href="${driveLink}" target="_blank">clique ici pour essayer</a>.</p>
+                    <p><strong>Ou bien, clique sur le bouton ci-dessous :</strong></p>
+                    <button id="openBrowser" onclick="openInBrowser()">📂 Ouvrir dans le navigateur</button>
                 `;
             } else {
-                // Si on est déjà dans un navigateur, on redirige directement
+                // Si l'utilisateur est déjà dans un vrai navigateur, on redirige immédiatement
                 window.location.href = driveLink;
             }
         }
+
+        function openInBrowser() {
+            var driveLink = "https://drive.google.com/uc?export=download&id=1Dap7LtjWzTCpnxjz7b78uIyDApOuDYNG";
+            var isAndroid = navigator.userAgent.toLowerCase().includes("android");
+
+            if (isAndroid) {
+                // Essaye d'ouvrir avec Chrome
+                window.location.href = `intent:${driveLink}#Intent;scheme=https;package=com.android.chrome;end;`;
+            } else {
+                // Essaye d'ouvrir avec Safari ou un autre navigateur sur iOS
+                window.open(driveLink, "_blank");
+            }
+        }
     </script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        button { padding: 10px 20px; font-size: 18px; background-color: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #0056b3; }
+    </style>
 </head>
-<body onload="redirectToDrive()">
+<body onload="checkAppAndRedirect()">
     <h1>Redirection en cours...</h1>
     <p>Si rien ne se passe, <a href="https://drive.google.com/uc?export=download&id=1Dap7LtjWzTCpnxjz7b78uIyDApOuDYNG">clique ici</a>.</p>
     <div id="message"></div>
